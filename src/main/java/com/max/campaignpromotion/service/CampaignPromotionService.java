@@ -1,14 +1,16 @@
 package com.max.campaignpromotion.service;
 
 import com.max.campaignpromotion.ProductFactory;
-import com.max.campaignpromotion.model.Campaign;
-import com.max.campaignpromotion.model.Product;
-import com.max.campaignpromotion.model.ProductCategory;
+import com.max.campaignpromotion.dto.ProductProjection;
+import com.max.campaignpromotion.entity.Campaign;
+import com.max.campaignpromotion.dto.ProductCategory;
 import com.max.campaignpromotion.repository.CampaignRepository;
 import com.max.campaignpromotion.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -42,7 +44,17 @@ public class CampaignPromotionService {
     }
   }
 
-  public Product serveAd(final ProductCategory category) {
-    return new Product();
+  public ProductProjection serveAd(final ProductCategory category) {
+    log.debug("serveAd with category {}", category.name());
+    final Optional<ProductProjection> highestPromotedProductByCategory = campaignRepository.findHighestPromotedProductByCategory(category.name());
+    if (highestPromotedProductByCategory.isPresent()) {
+      final ProductProjection highestPromotedProduct = highestPromotedProductByCategory.get();
+      log.info("promoted product with highest bid fetched : {}", highestPromotedProduct);
+      return highestPromotedProduct;
+    } else {
+      log.info("no promoted product for the matching category found , fetching product with highest bid...");
+      final Optional<ProductProjection> highestPromotedProduct = campaignRepository.findHighestPromotedProduct();
+      return highestPromotedProduct.orElseThrow(() -> new RuntimeException("error on attempt to fetch highest promoted product: campaigns must be inserted before using serveAd"));
+    }
   }
 }

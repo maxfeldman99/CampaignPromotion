@@ -1,7 +1,7 @@
 package com.max.campaignpromotion;
 
-import com.max.campaignpromotion.model.Product;
-import com.max.campaignpromotion.model.ProductCategory;
+import com.max.campaignpromotion.entity.Product;
+import com.max.campaignpromotion.dto.ProductCategory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.max.campaignpromotion.model;
+package com.max.campaignpromotion.dto;
 
 public enum ProductCategory {
   AUTOMOTIVE,

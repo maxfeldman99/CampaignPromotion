@@ -1,13 +1,16 @@
-package com.max.campaignpromotion.model;
+package com.max.campaignpromotion.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,7 +21,8 @@ public class Campaign {
   private Long id;
   private String name;
   private LocalDate startDate;
-  //private List<String> productIdentifiers;
+  @ManyToMany(fetch = FetchType.EAGER)
+  private List<Product> products;
   private BigDecimal bid;
 
 }
