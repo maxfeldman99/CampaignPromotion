@@ -16,3 +16,5 @@ Use Swagger UI to call apis,
   ],
   "bid": 100
 }
+
+records are stored using h2 in memory database , use h2-console with application.properties credenetials to interact with tables and relationships.
