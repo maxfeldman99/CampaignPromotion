@@ -4,6 +4,7 @@ import com.max.campaignpromotion.ProductFactory;
 import com.max.campaignpromotion.dto.ProductProjection;
 import com.max.campaignpromotion.entity.Campaign;
 import com.max.campaignpromotion.dto.ProductCategory;
+import com.max.campaignpromotion.entity.Product;
 import com.max.campaignpromotion.repository.CampaignRepository;
 import com.max.campaignpromotion.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;
@@ -54,7 +55,17 @@ public class CampaignPromotionService {
     } else {
       log.info("no promoted product for the matching category found , fetching product with highest bid...");
       final Optional<ProductProjection> highestPromotedProduct = campaignRepository.findHighestPromotedProduct();
-      return highestPromotedProduct.orElseThrow(() -> new RuntimeException("error on attempt to fetch highest promoted product: campaigns must be inserted before using serveAd"));
+      return highestPromotedProduct.orElseThrow(() -> new RuntimeException("error on attempt to fetch highest promoted product: active campaigns must be inserted before using serveAd"));
     }
+  }
+
+  public Product createProduct(final Product product) {
+    try {
+      return productRepository.save(product);
+    } catch (final Exception e) {
+      log.error(e.getMessage(), e);
+      throw new RuntimeException("error on attempt to create new product: %s".formatted(e.getMessage()));
+    }
+
   }
 }

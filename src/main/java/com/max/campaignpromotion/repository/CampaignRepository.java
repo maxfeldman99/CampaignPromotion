@@ -13,7 +13,7 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     FROM Campaign c
     JOIN campaign_products cp ON c.id = cp.campaign_id
     JOIN Product p ON cp.products_id = p.id
-    WHERE c.start_date <= DATEADD('DAY', 10, c.start_date)
+    WHERE c.start_date >= DATEADD('DAY', -10, CURRENT_DATE)
     AND p.category = :category
     ORDER BY c.bid DESC
     LIMIT 1
@@ -24,7 +24,7 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     SELECT p.* FROM Campaign c
     JOIN campaign_products cp ON c.id = cp.campaign_id
     JOIN Product p ON cp.products_id = p.id
-    WHERE c.start_date <= DATEADD('DAY', 10, c.start_date)
+    WHERE c.start_date >= DATEADD('DAY', -10, CURRENT_DATE)
     ORDER BY c.bid DESC
     LIMIT 1
     """, nativeQuery = true)
